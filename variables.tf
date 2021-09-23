@@ -1,20 +1,19 @@
 # Teleport agent name is a unique name to identify the individual agent instance.
-# If using the Teleport SSH service, this will also be the public "nodename" of the server wihch
-# appears in `tsh ls`.
 variable "teleport_agent_name" {
   type = string
 }
 
 # Teleport proxy hostname to connect to - this should include a web UI port like :443 or :3080
 # The security groups and networking for the agent must permit traffic to flow to this host/port.
+# Don't include https:// in the URL. Any SSL/TLS certificates presented must be valid chains.
 variable "teleport_proxy_hostname" {
   type = string
 }
 
 # Join token to use to join the Teleport cluster
-# This token must be valid for all Teleport services which the agent is providing access to.
-# i.e. to provide database, application and Kubernetes access, the token should be created with
-# tctl tokens add --type=db,app,kube
+# This token must already be configured on your cluster and be valid for all Teleport services which the agent is providing access to.
+# i.e. to provide database, application and node/SSH access, the token should be created with
+# tctl tokens add --type=db,app,node
 variable "teleport_join_token" {
   type = string
 }
@@ -82,19 +81,6 @@ variable "teleport_agent_app_uri" {
   type = string
 }
 
-# Kubernetes
-variable "teleport_agent_kube_enabled" {
-  type = string
-}
-
-variable "teleport_agent_kube_cluster_name" {
-  type = string
-}
-
-variable "teleport_agent_kube_labels" {
-  type = string
-}
-
 # SSH
 variable "teleport_agent_ssh_enabled" {
   type = string
@@ -117,16 +103,13 @@ variable "ami_id" {
   type = string
 }
 
-# List of AZs to spawn auth/proxy instances in
-# e.g. ["us-east-1a", "us-east-1d"]
-# This must match the region specified in your provider.tf file
-variable "az_list" {
+# List of subnets to spawn agent instances in
+# Note that Teleport application access does not yet de-duplicate available applications, so
+# will show multiple copies of the same application for access if multiple replicas are used.
+# e.g. ["subnet-abc123abc123", "subnet-abc456abc456"]
+# These subnet IDs must exist in the region specified in your provider.tf file
+variable "subnet_ids" {
   type = set(string)
-}
-
-# VPC ID to deploy into
-variable "vpc_id" {
-  type    = string
 }
 
 # Instance type used for agent autoscaling group

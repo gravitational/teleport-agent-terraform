@@ -5,7 +5,7 @@ resource "aws_autoscaling_group" "agent" {
   min_size                  = 1
   health_check_grace_period = 300
   health_check_type         = "EC2"
-  desired_capacity          = 1
+  desired_capacity          = length(var.subnet_ids)
   force_delete              = false
   launch_configuration      = aws_launch_configuration.agent.name
   vpc_zone_identifier       = [for subnet in data.aws_subnet.agent : subnet.id]
@@ -61,18 +61,12 @@ resource "aws_launch_configuration" "agent" {
       teleport_agent_app_name                 = var.teleport_agent_app_name
       teleport_agent_app_public_addr          = var.teleport_agent_app_public_addr
       teleport_agent_app_uri                  = var.teleport_agent_app_uri
-      teleport_agent_db_region                = var.teleport_agent_db_region
-      teleport_agent_db_protocol              = var.teleport_agent_db_protocol
-      teleport_agent_db_uri                   = var.teleport_agent_db_uri
-      teleport_agent_kube_enabled             = var.teleport_agent_kube_enabled
-      teleport_agent_kube_cluster_name        = var.teleport_agent_kube_cluster_name
-      teleport_agent_kube_labels              = var.teleport_agent_kube_labels
       teleport_agent_ssh_enabled              = var.teleport_agent_ssh_enabled
       teleport_agent_ssh_labels               = var.teleport_agent_ssh_labels
     }
   )
   key_name                    = var.key_name
   associate_public_ip_address = false
-  #security_groups             = [aws_security_group.agent.id]
+  security_groups             = [for s in aws_security_group.agent: s.id]
   #iam_instance_profile        = aws_iam_instance_profile.agent.id
 }

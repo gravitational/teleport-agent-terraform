@@ -40,21 +40,38 @@
 #   route_table_id = aws_route_table.agent[each.key].id
 # }
 
-# // Agent security groups do not allow any inbound access at all.
-# resource "aws_security_group" "agent" {
-#   #name   = "${var.cluster_name}-agent"
-#   vpc_id = data.aws_vpc.teleport.id
-#   tags = {
-#     TeleportAgent = var.teleport_agent_name
-#   }
-# }
+// Agent security groups only allow inbound SSH access.
+resource "aws_security_group" "agent" {
+  for_each = data.aws_subnet.agent
 
-# // Allow all outgoing traffic from agents
-# resource "aws_security_group_rule" "agent_egress_allow_all_traffic" {
-#   type              = "egress"
-#   from_port         = 0
-#   to_port           = 0
-#   protocol          = "-1"
-#   cidr_blocks       = ["0.0.0.0/0"]
-#   security_group_id = aws_security_group.agent.id
-# }
+  vpc_id = each.value.vpc_id
+  tags = {
+    TeleportAgent = var.teleport_agent_name
+  }
+}
+
+resource "aws_security_group_rule" "allow_inbound_ssh" {
+  for_each = aws_security_group.agent
+
+  type              = "ingress"
+  from_port         = 22
+  to_port           = 22
+  protocol          = "tcp"
+  cidr_blocks       = ["0.0.0.0/0"]
+  ipv6_cidr_blocks  = ["::/0"]
+  prefix_list_ids   = []
+  security_group_id = each.value.id
+}
+
+resource "aws_security_group_rule" "allow_outbound_all" {
+  for_each = aws_security_group.agent
+
+  type              = "egress"
+  from_port         = 0
+  to_port           = 0
+  protocol          = "-1"
+  cidr_blocks       = ["0.0.0.0/0"]
+  ipv6_cidr_blocks  = ["::/0"]
+  prefix_list_ids   = []
+  security_group_id = each.value.id
+}

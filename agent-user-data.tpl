@@ -20,14 +20,10 @@ TELEPORT_AGENT_APP_ENABLED=${teleport_agent_app_enabled}
 TELEPORT_AGENT_APP_DESCRIPTION="${teleport_agent_app_description}"
 TELEPORT_AGENT_APP_LABELS="${teleport_agent_app_labels}"
 TELEPORT_AGENT_APP_INSECURE_SKIP_VERIFY=${teleport_agent_app_insecure_skip_verify}
-TELEPORT_AGENT_APP_NAME=${teleport_agent_db_name}
+TELEPORT_AGENT_APP_NAME=${teleport_agent_app_name}
 TELEPORT_AGENT_APP_PUBLIC_ADDR="${teleport_agent_app_public_addr}"
 TELEPORT_AGENT_APP_URI=${teleport_agent_app_uri}
-# Kubernetes
-TELEPORT_AGENT_KUBE_ENABLED=${teleport_agent_kube_enabled}
-TELEPORT_AGENT_KUBE_CLUSTER_NAME=${teleport_agent_kube_cluster_name}
-TELEPORT_AGENT_KUBE_LABELS=${teleport_agent_kube_labels}
 # SSH
 TELEPORT_AGENT_SSH_ENABLED=${teleport_agent_ssh_enabled}
-TELEPORT_AGENT_SSH_LABELS=${teleport_agent_ssh_labels}
+TELEPORT_AGENT_SSH_LABELS="${teleport_agent_ssh_labels}"
 EOF
