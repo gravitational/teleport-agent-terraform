@@ -3,9 +3,10 @@ variable "teleport_agent_name" {
   type = string
 }
 
-# Teleport proxy hostname to connect to - this should include a web UI port like :443 or :3080
-# The security groups and networking for the agent must permit traffic to flow to this host/port.
-# Don't include https:// in the URL. Any SSL/TLS certificates presented must be valid chains.
+# Teleport proxy hostname/port to connect the agent to - this must include a web UI port like :443 or :3080
+# Any security groups and networking for your agent must permit outbound traffic to flow to this host/port,
+# as well as to the configured reverse tunnel port for the cluster (defaults to 3024, but can also be multiplexed on 443/3080)
+# Don't include https:// in the URL. Any SSL/TLS certificates presented must use valid chains.
 variable "teleport_proxy_hostname" {
   type = string
 }
@@ -28,6 +29,10 @@ variable "teleport_agent_db_description" {
   type = string
 }
 
+### Notes on labels:
+### Labels cannot contain the pipe character '|' - this is used to delimit each key:value static label entry.
+### Use a string like "env: dev|mode: agent" to add both "env: dev" and "mode: agent" static labels.
+### Dynamic labels/commands cannot be configured using this module.
 variable "teleport_agent_db_labels" {
   type = string
 }
@@ -61,6 +66,10 @@ variable "teleport_agent_app_description" {
   type = string
 }
 
+### Notes on labels:
+### Labels cannot contain the pipe character '|' - this is used to delimit each key:value static label entry.
+### Use a string like "env: dev|mode: agent" to add both "env: dev" and "mode: agent" static labels.
+### Dynamic labels/commands cannot be configured using this module.
 variable "teleport_agent_app_labels" {
   type = string
 }
@@ -86,6 +95,10 @@ variable "teleport_agent_ssh_enabled" {
   type = string
 }
 
+### Notes on labels:
+### Labels cannot contain the pipe character '|' - this is used to delimit each key:value static label entry.
+### Use a string like "env: dev|mode: agent" to add both "env: dev" and "mode: agent" static labels.
+### Dynamic labels/commands cannot be configured using this module.
 variable "teleport_agent_ssh_labels" {
   type = string
 }

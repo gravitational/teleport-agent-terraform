@@ -21,9 +21,10 @@ module "teleport-agent-terraform" {
   # Teleport Agent name is a unique agent name to identify the individual instance.
   teleport_agent_name = "teleport-database"
 
-  # Teleport proxy hostname/port to connect the agent to - this should include a web UI port like :443 or :3080
-  # Any security groups and networking for your agent must permit outbound traffic to flow to this host/port.
-  # Don't include https:// in the URL. Any SSL/TLS certificates presented must be valid chains.
+  # Teleport proxy hostname/port to connect the agent to - this must include a web UI port like :443 or :3080
+  # Any security groups and networking for your agent must permit outbound traffic to flow to this host/port,
+  # as well as to the configured reverse tunnel port for the cluster (defaults to 3024, but can also be multiplexed on 443/3080)
+  # Don't include https:// in the URL. Any SSL/TLS certificates presented must use valid chains.
   teleport_proxy_hostname = "teleport.example.com:443"
 
   # Join token which will allow the agent to join the Teleport cluster.
@@ -36,6 +37,11 @@ module "teleport-agent-terraform" {
   ### Agent mode settings
   ### Note that all of these variables must have a value configured, even if you are not using that mode.
   ### A blank string ("") should be used to avoid setting them.
+  ### Notes on labels:
+  ### Labels cannot contain the pipe character '|' - this is used to delimit each key:value static label entry.
+  ### Use a string like "env: dev|mode: agent" to add both "env: dev" and "mode: agent" static labels.
+  ### Dynamic labels/commands cannot be configured using this module.
+
   # Database
   teleport_agent_db_enabled = "false"
   teleport_agent_db_description = ""
