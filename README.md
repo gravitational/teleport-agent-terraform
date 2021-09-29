@@ -51,6 +51,14 @@ module "teleport-agent-terraform" {
   teleport_agent_db_region = ""
   teleport_agent_db_protocol = ""
   teleport_agent_db_uri = ""
+  # IAM role for Database agents
+  # If set, this will automatically provision an instance IAM role which allows RDS database token generation.
+  # This value can be found under "Resource ID" on the "Configuration" tab of the RDS console.
+  # If not set, the instance profile will be blank and you will need to configure your own role/instance profile.
+  teleport_agent_db_iam_resource_id = ""
+  # If set, this will limit the allowed database users for token generation to the specified username string.
+  # If not set, this will allow RDS token generation for all database users (*)
+  teleport_agent_db_iam_db_username = ""
 
   # App
   teleport_agent_app_enabled = "false"

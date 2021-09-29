@@ -57,6 +57,20 @@ variable "teleport_agent_db_uri" {
   type = string
 }
 
+# IAM role for Database agents
+# If set, this will automatically provision an instance IAM role which allows RDS database token generation.
+# This value can be found under "Resource ID" on the "Configuration" tab of the RDS console.
+# If not set, the instance profile will be blank and you will need to configure your own role/instance profi
+variable "teleport_agent_db_iam_resource_id" {
+  type = string
+}
+
+# If set, this will limit the allowed database users for token generation to the specified username string.
+# If not set, this will allow RDS token generation for all database users (*)
+variable "teleport_agent_db_iam_db_username" {
+  type = string
+}
+
 # App
 variable "teleport_agent_app_enabled" {
   type = string

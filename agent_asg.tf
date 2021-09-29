@@ -32,6 +32,7 @@ resource "aws_autoscaling_group" "agent" {
     ]
   }
 }
+
 resource "aws_launch_configuration" "agent" {
   lifecycle {
     create_before_destroy = true
@@ -68,5 +69,5 @@ resource "aws_launch_configuration" "agent" {
   key_name                    = var.key_name
   associate_public_ip_address = false
   security_groups             = [for s in aws_security_group.agent: s.id]
-  #iam_instance_profile        = aws_iam_instance_profile.agent.id
+  iam_instance_profile        = aws_iam_instance_profile.agent.id
 }
