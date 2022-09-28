@@ -144,16 +144,3 @@ variable "agent_instance_type" {
   type    = string
   default = "m4.large"
 }
-
-# AWS KMS alias used for encryption/decryption, defaults to alias used in SSM
-variable "kms_alias_name" {
-  default = "alias/aws/ssm"
-}
-
-# Account ID which owns the AMIs used to spin up instances
-# You should only need to change this if you're building your own AMIs for testing purposes.
-# The default is "126027368216" (Gravitational/Teleport's AMI hosting account)
-variable "ami_owner_account_id" {
-  type    = string
-  default = "126027368216"
-}

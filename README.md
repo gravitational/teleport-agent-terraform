@@ -93,13 +93,6 @@ module "teleport-agent-terraform" {
   # Agents can use OSS AMIs if preferred - Enterprise AMIs are not required.
   # See https://github.com/gravitational/teleport/blob/master/examples/aws/terraform/AMIS.md
   ami_id = "ami-0a96d44f7f99e06c7"
-
-  # AWS KMS alias used for encryption/decryption, defaults to alias used in SSM
-  kms_alias_name = "alias/aws/ssm"
-
-  # Account ID which owns the AMIs used to spin up instances
-  # You should only need to set this if you're building your own AMIs.
-  #ami_owner_account_id = "123456789012"
 }
 
 ```
@@ -111,12 +104,12 @@ Once this file is written, run `terraform init -upgrade && terraform plan && ter
 We recommend familiarizing yourself with the following resources prior to reviewing our Terraform examples:
 
 - [Teleport Architecture](https://goteleport.com/docs/architecture/overview/)
-- [Admin Guide](https://goteleport.com/docs/admin-guide/)
+- [Admin Guide](https://goteleport.com/docs/management/admin/)
 
 In order to spin up AWS resources using these Terraform examples, you need the following software:
 
-- terraform v0.13+ [install docs](https://learn.hashicorp.com/terraform/getting-started/install.html)
-- awscli v1.14+ [install docs](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html)
+- terraform v1.0+ [install docs](https://learn.hashicorp.com/tutorials/terraform/install-cli)
+- awscli v1.14+ [install docs](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
 
 ## How to get help
 

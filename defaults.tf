@@ -1,6 +1,7 @@
 # These are default values which shouldn't need to be changed by users
 # Assign a number to each AZ letter used in our configuration
-variable "az_number" {
+variable "az_number" { # tflint-ignore: terraform_unused_declarations
+  type = map(any)
   default = {
     a = 1
     b = 2

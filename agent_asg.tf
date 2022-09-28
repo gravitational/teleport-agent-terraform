@@ -37,10 +37,10 @@ resource "aws_launch_configuration" "agent" {
   lifecycle {
     create_before_destroy = true
   }
-  name_prefix                 = "${var.teleport_agent_name}-agent-"
-  image_id                    = var.ami_id
-  instance_type               = var.agent_instance_type
-  user_data                   = templatefile(
+  name_prefix   = "${var.teleport_agent_name}-agent-"
+  image_id      = var.ami_id
+  instance_type = var.agent_instance_type
+  user_data = templatefile(
     "${path.module}/agent-user-data.tpl",
     {
       region                                  = data.aws_region.current.name
@@ -66,8 +66,15 @@ resource "aws_launch_configuration" "agent" {
       teleport_agent_ssh_labels               = var.teleport_agent_ssh_labels
     }
   )
+  metadata_options {
+    http_endpoint = "enabled"
+    http_tokens   = "required"
+  }
+  root_block_device {
+    encrypted = true
+  }
   key_name                    = var.key_name
   associate_public_ip_address = false
-  security_groups             = [for s in aws_security_group.agent: s.id]
+  security_groups             = [for s in aws_security_group.agent : s.id]
   iam_instance_profile        = aws_iam_instance_profile.agent.id
 }
