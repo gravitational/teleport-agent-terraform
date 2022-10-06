@@ -44,15 +44,18 @@
 resource "aws_security_group" "agent" {
   for_each = data.aws_subnet.agent
 
-  vpc_id = each.value.vpc_id
+  description = "Agent security group"
+  vpc_id      = each.value.vpc_id
   tags = {
     TeleportAgent = var.teleport_agent_name
   }
 }
 
+# tfsec:ignore:aws-ec2-no-public-ingress-sgr
 resource "aws_security_group_rule" "allow_inbound_ssh" {
   for_each = aws_security_group.agent
 
+  description       = "Allow SSH inbound traffic"
   type              = "ingress"
   from_port         = 22
   to_port           = 22
@@ -63,9 +66,11 @@ resource "aws_security_group_rule" "allow_inbound_ssh" {
   security_group_id = each.value.id
 }
 
+# tfsec:ignore:aws-ec2-no-public-egress-sgr
 resource "aws_security_group_rule" "allow_outbound_all" {
   for_each = aws_security_group.agent
 
+  description       = "Allow all outbound traffic"
   type              = "egress"
   from_port         = 0
   to_port           = 0
