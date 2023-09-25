@@ -1,5 +1,8 @@
 # `teleport-agent-terraform`
 
+> [!IMPORTANT]
+> This code in this repo is deprecated.  Please use the code at https://github.com/gravitational/teleport/tree/master/examples/aws/terraform instead.
+
 This repo contains a reference Terraform module which configures a Teleport agent for providing access to remote resources via reverse tunnel.
 
 You can use this module to deploy an agent providing any or all of:
